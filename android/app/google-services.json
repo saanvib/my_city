@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "642897530924",
+    "firebase_url": "https://social-connect-2372d.firebaseio.com",
+    "project_id": "social-connect-2372d",
+    "storage_bucket": "social-connect-2372d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642897530924:android:728832bf96766cf6150189",
+        "android_client_info": {
+          "package_name": "com.omniate.mycity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642897530924-qm8qk7mft7eeund7vk32b2bq3sn13ai0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omniate.mycity",
+            "certificate_hash": "12e6569d273b0f478fd6157e275ad1068b821568"
+          }
+        },
+        {
+          "client_id": "642897530924-3hltce3cthhetj5l99srrrihd4odg654.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu-D_aX705mgpA0DMaoGZANrWDanbAOis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642897530924-3hltce3cthhetj5l99srrrihd4odg654.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "642897530924-jajecuu74hsmbf9hvn0067aho02qopcq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.omniate.socialconnect"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642897530924:android:5b44cb09d987f004150189",
+        "android_client_info": {
+          "package_name": "com.omniate.socialconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642897530924-dn131hshco07v1fah4d7ce4ib09qjadd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omniate.socialconnect",
+            "certificate_hash": "12e6569d273b0f478fd6157e275ad1068b821568"
+          }
+        },
+        {
+          "client_id": "642897530924-3hltce3cthhetj5l99srrrihd4odg654.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu-D_aX705mgpA0DMaoGZANrWDanbAOis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642897530924-3hltce3cthhetj5l99srrrihd4odg654.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "642897530924-jajecuu74hsmbf9hvn0067aho02qopcq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.omniate.socialconnect"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
