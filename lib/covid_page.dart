@@ -4,12 +4,11 @@
 
 import 'package:flutter/material.dart';
 
-
 // stores ExpansionPanel state information
 class CovidItem {
   CovidItem({
     @required this.expandedValue,
-    @required  this.headerValue,
+    @required this.headerValue,
     this.isExpanded = false,
   });
 
@@ -19,22 +18,21 @@ class CovidItem {
 }
 
 class CovidPage extends StatefulWidget {
-  CovidPage(@required this.data) ;
+  CovidPage(@required this.data);
   final List<CovidItem> data;
-
 
   @override
   _CovidPageState createState() => _CovidPageState();
 }
 
 class _CovidPageState extends State<CovidPage> {
-
-
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: _buildPanel(),
+    return Scrollbar(
+      child: SingleChildScrollView(
+        child: Container(
+          child: _buildPanel(),
+        ),
       ),
     );
   }

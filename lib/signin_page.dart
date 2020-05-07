@@ -22,44 +22,48 @@ class SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
         return Center(
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                      child: Text(
-                    'My City',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-                  )),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                      child: Text(
-                    'Sign in',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  )),
-                  _EmailPasswordForm(),
-                  _GoogleSignInSection(),
-                  Container(
-                    width: double.infinity,
-                    child: FlatButton(
-                      child: Text(
-                        "New user? Sign Up",
-                        style: TextStyle(color: Colors.purpleAccent[400]),
-                      ),
-                      color: Colors.transparent,
-                      onPressed: () {
-                        _pushPage(context, RegisterPage());
-                      },
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 30,
                     ),
-                  ),
-                ],
+                    Center(
+                        child: Text(
+                      'My City',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                    )),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                        child: Text(
+                      'Sign in',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    )),
+                    _EmailPasswordForm(),
+                    _GoogleSignInSection(),
+                    Container(
+                      width: double.infinity,
+                      child: FlatButton(
+                        child: Text(
+                          "New user? Sign Up",
+                          style: TextStyle(color: Colors.purpleAccent[400]),
+                        ),
+                        color: Colors.transparent,
+                        onPressed: () {
+                          _pushPage(context, RegisterPage());
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

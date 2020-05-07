@@ -57,56 +57,58 @@ class _NeighborAssistState extends State<NeighborAssist> {
               },
             ),
           ]),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Your help requests',
-                style: MyText.headline(context).copyWith(
-                    color: MyColors.grey_90, fontWeight: FontWeight.bold),
-              ),
-              StreamBuilder(
-                  stream: Firestore.instance
-                      .collection('help_requests')
-                      .where('requestor', isEqualTo: userEmail)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return new Text('Loading...');
-                      default:
-                        return new ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: snapshot.data.documents.length,
-                          itemBuilder: (context, index) => _buildlistitem(
-                              index, context, snapshot.data.documents[index]),
-                        );
-                    }
-                  }),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                        builder: (_) => RequestHelpDialog()),
-                  );
-                },
-                child: Text(
-                  'Request Help',
-                  style:
-                      TextStyle(color: Colors.purpleAccent[400], fontSize: 20),
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'Your help requests',
+                  style: MyText.headline(context).copyWith(
+                      color: MyColors.grey_90, fontWeight: FontWeight.bold),
                 ),
-              ),
-              Divider(
-                height: 30,
-              ),
-              OfferHelp(),
-            ],
+                StreamBuilder(
+                    stream: Firestore.instance
+                        .collection('help_requests')
+                        .where('requestor', isEqualTo: userEmail)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError)
+                        return new Text('Error: ${snapshot.error}');
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return new Text('Loading...');
+                        default:
+                          return new ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) => _buildlistitem(
+                                index, context, snapshot.data.documents[index]),
+                          );
+                      }
+                    }),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                          builder: (_) => RequestHelpDialog()),
+                    );
+                  },
+                  child: Text(
+                    'Request Help',
+                    style: TextStyle(
+                        color: Colors.purpleAccent[400], fontSize: 20),
+                  ),
+                ),
+                Divider(
+                  height: 30,
+                ),
+                OfferHelp(),
+              ],
+            ),
           ),
         ),
       ),
