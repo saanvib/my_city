@@ -3,15 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mycity/list_adapter_basic.dart';
 import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'crime_report.dart';
 import 'senior_page.dart';
 
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomePage extends StatefulWidget {
@@ -25,6 +26,29 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30);
   static BuildContext saveContext;
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.getToken().then((token) {print("FirebaseMessaging token: $token");});
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
+      print("onMessage: $message");
+      _showDialog(message["notification"]["title"], message["notification"]["body"]);
+      HapticFeedback.vibrate();
+      SystemSound.play(SystemSoundType.click);
+    },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        HapticFeedback.vibrate();
+        SystemSound.play(SystemSoundType.click);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        HapticFeedback.vibrate();
+        SystemSound.play(SystemSoundType.click);
+      },);
+
+  }
   List<Widget> _widgetOptions = <Widget>[
     Column(
       children: <Widget>[
@@ -282,75 +306,64 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-class PushMessagingExample extends StatefulWidget {
-  @override
-  _PushMessagingExampleState createState() => _PushMessagingExampleState();
-}
-
-class _PushMessagingExampleState extends State<PushMessagingExample> {
-  String _homeScreenText = "Waiting for token...";
-  String _messageText = "Waiting for message...";
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  @override
-  void initState() {
-    super.initState();
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        setState(() {
-          _messageText = "Push Messaging message: $message";
-        });
-        print("onResume: $message");
+  void _showDialog(String title, String body) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(body),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
       },
     );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      setState(() {
-        _homeScreenText = "Push Messaging token: $token";
-      });
-      print(_homeScreenText);
-    });
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Push Messaging Demo'),
-        ),
-        body: Material(
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Text(_homeScreenText),
-              ),
-              Row(children: <Widget>[
-                Expanded(
-                  child: Text(_messageText),
-                ),
-              ])
-            ],
-          ),
-        ));
+
+
+class PushNotificationsManager {
+
+  PushNotificationsManager._();
+
+  factory PushNotificationsManager() => _instance;
+
+  static final PushNotificationsManager _instance = PushNotificationsManager._();
+
+
+  bool _initialized = false;
+
+  Future<void> init() async {
+    if (!_initialized) {
+      // For iOS request permission first.
+      _firebaseMessaging.requestNotificationPermissions();
+      _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+        },
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+        },);
+
+      // For testing purposes print the Firebase Messaging token
+      String token = await _firebaseMessaging.getToken();
+      print("FirebaseMessaging token: $token");
+
+      _initialized = true;
+    }
   }
 }
 

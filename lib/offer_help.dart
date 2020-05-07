@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mycity/my_colors.dart';
 
 import 'detail_page.dart';
 import 'my_colors.dart';
+import 'my_text.dart';
 
 
 class OfferHelp extends StatefulWidget {
@@ -26,7 +26,9 @@ class _OfferHelpState extends State<OfferHelp> {
         children: <Widget>[
           Text(
             'Extend a helping hand',
-            style: optionStyle,
+            style: MyText.headline(context).copyWith(
+                color: MyColors.grey_90, fontWeight: FontWeight.bold
+            ),
           ),
           StreamBuilder(
               stream: Firestore.instance

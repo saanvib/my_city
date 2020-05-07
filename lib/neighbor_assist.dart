@@ -6,7 +6,9 @@ import 'package:mycity/offer_help.dart';
 import 'package:mycity/request_help.dart';
 import 'package:mycity/welcome_cards.dart';
 
+import 'list_adapter_basic.dart';
 import 'my_colors.dart';
+import 'my_text.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -18,6 +20,7 @@ class NeighborAssist extends StatefulWidget {
 class _NeighborAssistState extends State<NeighborAssist> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  //TODO: Get users email from auth.
   String userEmail = "rishi.bhargava@gmail.com";
 
 //  @override
@@ -54,56 +57,68 @@ class _NeighborAssistState extends State<NeighborAssist> {
               },
             ),
           ]),
-        body: Container(
-        margin: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'Your help requests',
-              style: optionStyle,
-            ),
-            StreamBuilder(
-                stream: Firestore.instance
-                    .collection('help_requests')
-                    .where('requestor', isEqualTo: userEmail)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError)
-                    return new Text('Error: ${snapshot.error}');
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return new Text('Loading...');
-                    default:
-                      return new ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (context, index) => _buildlistitem(
-                            context, snapshot.data.documents[index]),
-                      );
-                  }
-                }),
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (_) => RequestHelpDialog()),
-                );
-              },
-              child: const Text('Request Help', style: TextStyle(fontSize: 20)),
-            ),
-            OfferHelp(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Your help requests',
+                style: MyText.headline(context).copyWith(
+                    color: MyColors.grey_90, fontWeight: FontWeight.bold),
+              ),
+              StreamBuilder(
+                  stream: Firestore.instance
+                      .collection('help_requests')
+                      .where('requestor', isEqualTo: userEmail)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError)
+                      return new Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return new Text('Loading...');
+                      default:
+                        return new ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (context, index) => _buildlistitem(
+                              index, context, snapshot.data.documents[index]),
+                        );
+                    }
+                  }),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                        builder: (_) => RequestHelpDialog()),
+                  );
+                },
+                child: Text(
+                  'Request Help',
+                  style:
+                      TextStyle(color: Colors.purpleAccent[400], fontSize: 20),
+                ),
+              ),
+              Divider(
+                height: 30,
+              ),
+              OfferHelp(),
+            ],
+          ),
         ),
-      ),);
+      ),
+    );
   }
 
   static Widget _buildlistitem(
-      BuildContext context, DocumentSnapshot document) {
-    return ListTile(
-      title: Text(document['request_type']),
-      subtitle: Text(document['details']),
-    );
+      int index, BuildContext context, DocumentSnapshot document) {
+    return ItemTile(
+        index: index,
+        object: Item(document["request_type"], document["details"], null, null),
+        onClick: null);
   }
 
   getCurrentUser() async {
@@ -114,5 +129,3 @@ class _NeighborAssistState extends State<NeighborAssist> {
     print(user.email);
   }
 }
-
-

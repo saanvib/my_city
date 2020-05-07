@@ -37,6 +37,9 @@ class _RequestHelpDialogState extends State<RequestHelpDialog> {
         child: Container(
           margin: const EdgeInsets.all(20.0),
           child: Column(children: <Widget>[
+            Container(
+              height: 20,
+            ),
             Text(
               "Please use the form below to request help from one of the neighbours.",
             ),
@@ -81,7 +84,8 @@ class _RequestHelpDialogState extends State<RequestHelpDialog> {
                   Firestore.instance.collection('help_requests').add({
                     "request_type": _requestChoice,
                     "details": _descriptionController.text,
-                    "requestor": "email",
+                    //TODO: change this to users email.
+                    "requestor": "rishi.bhargava@gmail.com",
                     "status": "New",
                   });
                   Navigator.of(context).push(
