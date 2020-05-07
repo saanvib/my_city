@@ -9,6 +9,7 @@ import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'crime_report.dart';
 import 'senior_page.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,6 +24,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30);
+  static BuildContext saveContext;
   List<Widget> _widgetOptions = <Widget>[
     Column(
       children: <Widget>[
@@ -88,7 +90,11 @@ class HomePageState extends State<HomePage> {
                 children: <Widget>[
                   FlatButton(
                     child: Image.asset("images/CrimeSceneInvestigation.jpg"),
-                    onPressed: null,
+                    onPressed: () async {
+                      print("onpressed");
+                      Navigator.of(saveContext).push(MaterialPageRoute<void>(
+                          builder: (_) => CrimeReport()));
+                    },
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -234,8 +240,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
+    saveContext = context;
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.title),
