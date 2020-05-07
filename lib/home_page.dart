@@ -10,6 +10,7 @@ import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'crime_report.dart';
+import 'my_text.dart';
 import 'senior_page.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -30,13 +31,17 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _firebaseMessaging.getToken().then((token) {print("FirebaseMessaging token: $token");});
-    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
-      print("onMessage: $message");
-      _showDialog(message["notification"]["title"], message["notification"]["body"]);
-      HapticFeedback.vibrate();
-      SystemSound.play(SystemSoundType.click);
-    },
+    _firebaseMessaging.getToken().then((token) {
+      print("FirebaseMessaging token: $token");
+    });
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        _showDialog(
+            message["notification"]["title"], message["notification"]["body"]);
+        HapticFeedback.vibrate();
+        SystemSound.play(SystemSoundType.click);
+      },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
         HapticFeedback.vibrate();
@@ -46,9 +51,10 @@ class HomePageState extends State<HomePage> {
         print("onResume: $message");
         HapticFeedback.vibrate();
         SystemSound.play(SystemSoundType.click);
-      },);
-
+      },
+    );
   }
+
   List<Widget> _widgetOptions = <Widget>[
     Column(
       children: <Widget>[
@@ -63,6 +69,7 @@ class HomePageState extends State<HomePage> {
             stream: Firestore.instance
                 .collection('announcements')
                 .orderBy('Date', descending: true)
+                .limit(4)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -82,85 +89,7 @@ class HomePageState extends State<HomePage> {
                   );
               }
             }),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // SizedBox(width: 20),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  FlatButton(
-                    child: Image.asset("images/image_events.png"),
-                    onPressed: null,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      width: 80,
-                      color: Colors.black.withOpacity(0.5),
-                      child: Text("Events",
-                          style:
-                              TextStyle(color: Colors.grey[100], fontSize: 20)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  FlatButton(
-                    child: Image.asset("images/CrimeSceneInvestigation.jpg"),
-                    onPressed: () async {
-                      print("onpressed");
-                      Navigator.of(saveContext).push(MaterialPageRoute<void>(
-                          builder: (_) => CrimeReport()));
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      width: 80,
-                      color: Colors.black.withOpacity(0.5),
-                      child: Text("Crime Report",
-                          style:
-                              TextStyle(color: Colors.grey[100], fontSize: 20)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  FlatButton(
-                    child: Image.asset("images/elections.jpg"),
-                    onPressed: null,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      // padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                      alignment: Alignment.centerRight,
-                      height: 50,
-                      width: 80,
-                      color: Colors.black.withOpacity(0.5),
-                      child: Text("Elections 2020",
-                          style:
-                              TextStyle(color: Colors.grey[100], fontSize: 20)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        HomePageTiles(),
       ],
     ),
     Column(children: <Widget>[
@@ -284,7 +213,9 @@ class HomePageState extends State<HomePage> {
               },
             ),
           ]),
-      body: _widgetOptions.elementAt(widget._activeTab),
+      body: Scrollbar(
+        child: _widgetOptions.elementAt(widget._activeTab),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -331,16 +262,13 @@ class HomePageState extends State<HomePage> {
   }
 }
 
-
-
 class PushNotificationsManager {
-
   PushNotificationsManager._();
 
   factory PushNotificationsManager() => _instance;
 
-  static final PushNotificationsManager _instance = PushNotificationsManager._();
-
+  static final PushNotificationsManager _instance =
+      PushNotificationsManager._();
 
   bool _initialized = false;
 
@@ -348,15 +276,17 @@ class PushNotificationsManager {
     if (!_initialized) {
       // For iOS request permission first.
       _firebaseMessaging.requestNotificationPermissions();
-      _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
+      _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+        },
         onLaunch: (Map<String, dynamic> message) async {
           print("onLaunch: $message");
         },
         onResume: (Map<String, dynamic> message) async {
           print("onResume: $message");
-        },);
+        },
+      );
 
       // For testing purposes print the Firebase Messaging token
       String token = await _firebaseMessaging.getToken();
@@ -431,6 +361,276 @@ class GridItemTile extends StatelessWidget {
   void _pushPage(BuildContext context, Widget page) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => page),
+    );
+  }
+}
+//
+//class HomePageTiles extends StatefulWidget {
+//  @override
+//  State<StatefulWidget> createState() => HomePageTilesState();
+//}
+//
+//class HomePageTilesState extends State<HomePageTiles> {
+//  @override
+//  Widget build(BuildContext context) {
+//    return Column(
+//      children: <Widget>[
+//        Row(
+//          crossAxisAlignment: CrossAxisAlignment.center,
+//          children: <Widget>[
+//// SizedBox(width: 20),
+//            Expanded(
+//              child: Stack(
+//                children: <Widget>[
+//                  FlatButton(
+//                    child: Image.asset("images/image_events.png"),
+//                    onPressed: null,
+//                  ),
+//                  Align(
+//                    alignment: Alignment.bottomCenter,
+//                    child: Container(
+//// padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+//                      alignment: Alignment.centerRight,
+//                      height: 50,
+//                      width: 80,
+//                      color: Colors.black.withOpacity(0.5),
+//                      child: Text("Events",
+//                          style:
+//                              TextStyle(color: Colors.grey[100], fontSize: 20)),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
+//            Expanded(
+//              child: Stack(
+//                children: <Widget>[
+//                  FlatButton(
+//                    child: Image.asset("images/CrimeSceneInvestigation.jpg"),
+//                    onPressed: () async {
+//                      print("onpressed");
+//                      Navigator.of(context).push(MaterialPageRoute<void>(
+//                          builder: (_) => CrimeReport()));
+//                    },
+//                  ),
+//                  Align(
+//                    alignment: Alignment.bottomCenter,
+//                    child: Container(
+//// padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+//                      alignment: Alignment.centerRight,
+//                      height: 50,
+//                      width: 80,
+//                      color: Colors.black.withOpacity(0.5),
+//                      child: Text("Crime Report",
+//                          style:
+//                              TextStyle(color: Colors.grey[100], fontSize: 20)),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
+//            Expanded(
+//              child: Stack(
+//                children: <Widget>[
+//                  FlatButton(
+//                    child: Image.asset("images/elections.jpg"),
+//                    onPressed: null,
+//                  ),
+//                  Align(
+//                    alignment: Alignment.bottomCenter,
+//                    child: Container(
+//// padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+//                      alignment: Alignment.centerRight,
+//                      height: 50,
+//                      width: 80,
+//                      color: Colors.black.withOpacity(0.5),
+//                      child: Text("Elections 2020",
+//                          style:
+//                              TextStyle(color: Colors.grey[100], fontSize: 20)),
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
+//          ],
+//        ),
+//      ],
+//    );
+//  }
+//}
+
+class HomePageTiles extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => HomePageTilesState();
+}
+
+class HomePageTilesState extends State<HomePageTiles> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(height: 10),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (_) => CrimeReport()));
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                  color: Colors.white,
+                  elevation: 2,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.lightGreen[500],
+                          child: Icon(
+                            Icons.event,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(width: 10),
+                        Text(
+                          "Events",
+                          style: MyText.subhead(context).copyWith(
+                              color: MyColors.grey_60,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(width: 5),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (_) => CrimeReport()));
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                  color: Colors.white,
+                  elevation: 2,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.indigo[400],
+                          child: Icon(
+                            Icons.warning,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(width: 10),
+                        Text(
+                          "Crime Bulletin",
+                          style: MyText.subhead(context).copyWith(
+                              color: MyColors.grey_60,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(height: 5),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (_) => CrimeReport()));
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                  color: Colors.white,
+                  elevation: 2,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.red[300],
+                          child: Icon(
+                            Icons.thumbs_up_down,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(width: 10),
+                        Text(
+                          "Elections",
+                          style: MyText.subhead(context).copyWith(
+                              color: MyColors.grey_60,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(width: 5),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute<void>(builder: (_) => CrimeReport()));
+                },
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                  color: Colors.white,
+                  elevation: 2,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.lightGreen[500],
+                          child: Icon(
+                            Icons.description,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(width: 10),
+                        Text(
+                          "FAQ",
+                          style: MyText.subhead(context).copyWith(
+                              color: MyColors.grey_60,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
