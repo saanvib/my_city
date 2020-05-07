@@ -7,7 +7,6 @@ import 'package:mycity/my_colors.dart';
 import 'detail_page.dart';
 import 'my_colors.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class OfferHelp extends StatefulWidget {
   @override
@@ -82,7 +81,7 @@ class _OfferHelpState extends State<OfferHelp> {
                       )
                     : Icon(Icons.check_box_outline_blank, color: Colors.white),
                 onPressed: () {
-                  var doc = Firestore.instance
+                  Firestore.instance
                       .collection('help_requests')
                       .document(document.documentID)
                       .updateData({"status": "accepted"});

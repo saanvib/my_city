@@ -9,8 +9,7 @@ import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'neighbor_assist.dart';
-import 'offer_help.dart';
+import 'senior_page.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -161,12 +160,20 @@ class HomePageState extends State<HomePage> {
             }
           }),
     ]),
-    Column(
-      children: <Widget>[
-        NeighborAssist(),
-        OfferHelp(),
-      ],
-    ),
+    SeniorPage(),
+//    CovidPage([CovidItem(
+//      expandedValue: ArticleSimple(),
+//      headerValue: "Senior Connections",
+//      isExpanded:true,
+//    )]),
+
+//    Column(
+//      children: <Widget>[
+//        ArticleSimple(),
+//        NeighborAssist(),
+//        OfferHelp(),
+//      ],
+//    ),
   ];
 
   static Widget _buildEventListItem(
@@ -227,6 +234,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.title),
@@ -246,9 +255,7 @@ class HomePageState extends State<HomePage> {
               },
             ),
           ]),
-      body: SingleChildScrollView(
-        child: _widgetOptions.elementAt(widget._activeTab),
-      ),
+      body: _widgetOptions.elementAt(widget._activeTab),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

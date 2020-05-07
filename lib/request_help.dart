@@ -14,8 +14,6 @@ class RequestHelpDialog extends StatefulWidget {
 }
 
 class _RequestHelpDialogState extends State<RequestHelpDialog> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _descriptionController = TextEditingController();
   var _requestType = ["Grocery", "Food Pickup", "Gardening", "Other"];
