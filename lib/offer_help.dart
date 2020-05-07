@@ -32,8 +32,10 @@ class _OfferHelpState extends State<OfferHelp> {
             StreamBuilder(
                 stream: Firestore.instance
                     .collection('help_requests')
-//                  .where('status',
-//                      isEqualTo: "New") // where('user', isEqualTo: uid)
+                    .where('status', whereIn: [
+                  "New",
+                  "accepted"
+                ]) // where('user', isEqualTo: uid)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -58,8 +60,7 @@ class _OfferHelpState extends State<OfferHelp> {
     );
   }
 
-  static Widget _buildlistitem(
-      BuildContext context, DocumentSnapshot document) {
+  Widget _buildlistitem(BuildContext context, DocumentSnapshot document) {
     return Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -83,10 +84,22 @@ class _OfferHelpState extends State<OfferHelp> {
                       )
                     : Icon(Icons.check_box_outline_blank, color: Colors.white),
                 onPressed: () {
-                  Firestore.instance
-                      .collection('help_requests')
-                      .document(document.documentID)
-                      .updateData({"status": "accepted"});
+                  if (document["status"] == "accepted") {
+                    Firestore.instance
+                        .collection('help_requests')
+                        .document(document.documentID)
+                        .updateData({"status": "completed"});
+                    final snackBar = SnackBar(
+                        content: Text('Thanks for completing the task!'));
+
+                    Scaffold.of(context).showSnackBar(snackBar);
+                  } else {
+                    Firestore.instance
+                        .collection('help_requests')
+                        .document(document.documentID)
+                        .updateData(
+                            {"status": "accepted", "accepted_by": userEmail});
+                  }
                 },
               ),
             ),

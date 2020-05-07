@@ -63,10 +63,13 @@ class _RequestHelpDialogState extends State<RequestHelpDialog> {
             ),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                helperText: "Enter a short description of the task. ",
                 hintText: 'Enter a short description of the task.',
-                labelText: 'Details',
+                labelText: 'Task Details',
               ),
+              maxLines: 3,
               validator: (String value) {
                 return value.isEmpty ? "Please enter a description." : null;
               },
