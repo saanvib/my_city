@@ -72,7 +72,8 @@ class _NeighborAssistState extends State<NeighborAssist> {
                     stream: Firestore.instance
                         .collection('help_requests')
                         .where('requestor', isEqualTo: userEmail)
-                        .snapshots(),
+                        .where('status',
+                            whereIn: ['New', 'accepted']).snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError)

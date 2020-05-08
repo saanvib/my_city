@@ -5,10 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:mycity/events_page.dart';
 import 'package:mycity/list_adapter_basic.dart';
 import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'crime_report.dart';
 import 'my_text.dart';
 import 'senior_page.dart';
@@ -120,19 +122,6 @@ class HomePageState extends State<HomePage> {
           }),
     ]),
     SeniorPage(),
-//    CovidPage([CovidItem(
-//      expandedValue: ArticleSimple(),
-//      headerValue: "Senior Connections",
-//      isExpanded:true,
-//    )]),
-
-//    Column(
-//      children: <Widget>[
-//        ArticleSimple(),
-//        NeighborAssist(),
-//        OfferHelp(),
-//      ],
-//    ),
   ];
 
   static Widget _buildEventListItem(
@@ -477,7 +466,7 @@ class HomePageTilesState extends State<HomePageTiles> {
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute<void>(builder: (_) => CrimeReport()));
+                      MaterialPageRoute<void>(builder: (_) => EventPage()));
                 },
                 child: Card(
                   shape: RoundedRectangleBorder(
