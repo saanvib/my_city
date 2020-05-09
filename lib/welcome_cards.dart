@@ -167,22 +167,22 @@ class Wizard {
   String brief;
 
   static const List<String> wizard_title = [
-    "Ready to Travel",
-    "Pick the Ticket",
-    "Flight to Destination",
-    "Enjoy Holiday"
+    "Updates from City",
+    "Connect and Assist Seniors",
+    "Community Event Updates",
+    "Local COVID-19 Info"
   ];
   static const List<String> wizard_brief = [
-    "Choose your destination, plan Your trip. Pick the best place for Your holiday",
-    "Select the day, pick Your ticket. We give you the best prices. We guarantee!",
-    "Safe and Comfort flight is our priority. Professional crew and services.",
-    "Enjoy your holiday, Don't forget to feel the moment and take a photo!",
+    "Stay informed with accurate and current information from your city.",
+    "Help seniors in your community with grocery, gardening, etc.",
+    "Save the date for city events. Don't miss out on community activities!",
+    "Read updated statistics, lockdown information, and find testing centers.",
   ];
   static const List<String> wizard_image = [
-    "images/img_wizard_1.png",
     "images/img_wizard_2.png",
-    "images/img_wizard_3.png",
-    "images/img_wizard_4.png",
+    "images/seniors.png",
+    "images/events.webp",
+    "images/covid19.png",
   ];
   static const List<String> wizard_background = [
     "images/image_15.jpg",
