@@ -58,21 +58,55 @@ class HomePageState extends State<HomePage> {
   }
 
   List<Widget> _widgetOptions = <Widget>[
-    Column(
-      children: <Widget>[
+    SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'Announcements',
+            style: optionStyle,
+          ),
+          StreamBuilder(
+              stream: Firestore.instance
+                  .collection('announcements')
+                  .orderBy('Date', descending: true)
+                  .limit(4)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError)
+                  return new Text('Error: ${snapshot.error}');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return new Text('Loading...');
+                  default:
+                    return new ListView.builder(
+                      padding: const EdgeInsets.all(10),
+                      // scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) => _buildListItem(
+                          index, context, snapshot.data.documents[index]),
+                    );
+                }
+              }),
+          HomePageTiles(),
+        ],
+      ),
+    ),
+    SingleChildScrollView(
+      child: Column(children: <Widget>[
         SizedBox(
           height: 30,
         ),
         Text(
-          'Announcements',
+          'Community Resources',
           style: optionStyle,
         ),
         StreamBuilder(
-            stream: Firestore.instance
-                .collection('announcements')
-                .orderBy('Date', descending: true)
-                .limit(4)
-                .snapshots(),
+            stream: Firestore.instance.collection('community').snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError)
@@ -82,45 +116,16 @@ class HomePageState extends State<HomePage> {
                   return new Text('Loading...');
                 default:
                   return new ListView.builder(
-                    padding: const EdgeInsets.all(10),
                     // scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: snapshot.data.documents.length,
-                    itemBuilder: (context, index) => _buildListItem(
+                    itemBuilder: (context, index) => _buildCommunityList(
                         index, context, snapshot.data.documents[index]),
                   );
               }
             }),
-        HomePageTiles(),
-      ],
+      ]),
     ),
-    Column(children: <Widget>[
-      SizedBox(
-        height: 30,
-      ),
-      Text(
-        'Community Resources',
-        style: optionStyle,
-      ),
-      StreamBuilder(
-          stream: Firestore.instance.collection('community').snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return new Text('Loading...');
-              default:
-                return new ListView.builder(
-                  // scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) => _buildCommunityList(
-                      index, context, snapshot.data.documents[index]),
-                );
-            }
-          }),
-    ]),
     SeniorPage(),
   ];
 
@@ -202,9 +207,7 @@ class HomePageState extends State<HomePage> {
               },
             ),
           ]),
-      body: SingleChildScrollView(
-        child: _widgetOptions.elementAt(widget._activeTab),
-      ),
+      body: _widgetOptions.elementAt(widget._activeTab),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -525,7 +528,7 @@ class HomePageTilesState extends State<HomePageTiles> {
                         ),
                         Container(width: 10),
                         Text(
-                          "Crime Bulletin",
+                          "Crime Reports",
                           style: MyText.subhead(context).copyWith(
                               color: MyColors.grey_60,
                               fontWeight: FontWeight.bold),
