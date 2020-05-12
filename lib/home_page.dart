@@ -202,7 +202,7 @@ class HomePageState extends State<HomePage> {
               },
             ),
           ]),
-      body: Scrollbar(
+      body: SingleChildScrollView(
         child: _widgetOptions.elementAt(widget._activeTab),
       ),
       bottomNavigationBar: BottomNavigationBar(
