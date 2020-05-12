@@ -168,8 +168,8 @@ class Wizard {
 
   static const List<String> wizard_title = [
     "Updates from City",
-    "Connect and Assist Seniors",
-    "Community Event Updates",
+    "Senior Connections",
+    "Community Events",
     "Local COVID-19 Info"
   ];
   static const List<String> wizard_brief = [

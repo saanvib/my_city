@@ -527,12 +527,23 @@ class HomePageTilesState extends State<HomePageTiles> {
                           ),
                         ),
                         Container(width: 10),
-                        Text(
-                          "Crime Reports",
-                          style: MyText.subhead(context).copyWith(
-                              color: MyColors.grey_60,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              "Crime",
+                              style: MyText.subhead(context).copyWith(
+                                  color: MyColors.grey_60,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Bulletin",
+                              style: MyText.subhead(context).copyWith(
+                                  color: MyColors.grey_60,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ],
                     ),
