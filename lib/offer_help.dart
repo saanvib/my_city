@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mycity/my_colors.dart';
 
 import 'detail_page.dart';
-import 'my_colors.dart';
-import 'my_text.dart';
+import 'styles/my_colors.dart';
+import 'styles/my_text.dart';
 
 class OfferHelp extends StatefulWidget {
   @override

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mycity/signin_page.dart';
 
-import 'my_colors.dart';
-import 'my_text.dart';
+import 'styles/my_colors.dart';
+import 'styles/my_text.dart';
 
 class WelcomeCards extends StatefulWidget {
   WelcomeCards();

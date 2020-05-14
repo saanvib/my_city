@@ -7,13 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mycity/events_page.dart';
 import 'package:mycity/list_adapter_basic.dart';
-import 'package:mycity/my_colors.dart';
 import 'package:mycity/welcome_cards.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'covid_page.dart';
 import 'crime_report.dart';
-import 'my_text.dart';
-import 'senior_page.dart';
+import 'styles/my_colors.dart';
+import 'styles/my_text.dart';
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -126,7 +126,7 @@ class HomePageState extends State<HomePage> {
             }),
       ]),
     ),
-    SeniorPage(),
+    CovidPage(),
   ];
 
   static Widget _buildEventListItem(

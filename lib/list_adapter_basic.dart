@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'my_text.dart';
+import 'styles/my_text.dart';
 
 //class ListBasicAdapter {
 //  List items = <Item>[];

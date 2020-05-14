@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mycity/home_page.dart';
-import 'package:mycity/my_colors.dart';
 
 import 'password_field.dart';
 import 'register_page.dart';
+import 'styles/my_colors.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();

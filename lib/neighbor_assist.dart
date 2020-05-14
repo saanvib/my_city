@@ -7,8 +7,8 @@ import 'package:mycity/request_help.dart';
 import 'package:mycity/welcome_cards.dart';
 
 import 'list_adapter_basic.dart';
-import 'my_colors.dart';
-import 'my_text.dart';
+import 'styles/my_colors.dart';
+import 'styles/my_text.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 

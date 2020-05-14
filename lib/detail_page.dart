@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'my_colors.dart';
+import 'styles/my_colors.dart';
 
 class DetailPage extends StatelessWidget {
+  static const TextStyle optionStyle = TextStyle(fontSize: 30);
   final PageContent pageContent;
   DetailPage({Key key, @required this.pageContent}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(pageContent.topic + "Task"),
+        title: Text(
+          pageContent.topic + " Task",
+          style: optionStyle,
+        ),
         // leading: new Container(),
         backgroundColor: MyColors.skyBlue,
       ),

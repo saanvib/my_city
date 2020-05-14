@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mycity/welcome_cards.dart';
 
-import 'my_colors.dart';
-import 'my_text.dart';
+import 'styles/my_colors.dart';
+import 'styles/my_text.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
